@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{FCDBA8B1-7477-4F1D-9D18-6EFE404030F9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HangFireServer", "HangFireServer\HangFireServer.csproj", "{C3200AD1-12D7-4C84-9295-CF2B20ACBD4A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{4EAA7723-19D6-46F6-81CB-3237F235727E}"
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FCDBA8B1-7477-4F1D-9D18-6EFE404030F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FCDBA8B1-7477-4F1D-9D18-6EFE404030F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FCDBA8B1-7477-4F1D-9D18-6EFE404030F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FCDBA8B1-7477-4F1D-9D18-6EFE404030F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C3200AD1-12D7-4C84-9295-CF2B20ACBD4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C3200AD1-12D7-4C84-9295-CF2B20ACBD4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3200AD1-12D7-4C84-9295-CF2B20ACBD4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
