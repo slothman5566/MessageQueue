@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HangFireServer", "HangFireServer\HangFireServer.csproj", "{C3200AD1-12D7-4C84-9295-CF2B20ACBD4A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4EAA7723-19D6-46F6-81CB-3237F235727E} = {4EAA7723-19D6-46F6-81CB-3237F235727E}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{4EAA7723-19D6-46F6-81CB-3237F235727E}"
 EndProject
