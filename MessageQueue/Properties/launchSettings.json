@@ -37,7 +37,8 @@
         "ASPNETCORE_HTTP_PORTS": "8080"
       },
       "publishAllPorts": true,
-      "useSSL": true
+      "useSSL": true,
+      "sslPort": 8591
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
@@ -45,7 +46,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:36074",
+      "applicationUrl": "http://localhost:8591",
       "sslPort": 44337
     }
   }
