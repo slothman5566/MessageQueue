@@ -1,5 +1,6 @@
 using MessageQueue.Web.Models;
 using MessageQueue.Web.Service;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOptions<MessageQueueConnection>()
             .Bind(builder.Configuration.GetSection(nameof(MessageQueueConnection)));
-
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
+builder.Services.AddScoped<IOrderService, OrderService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
