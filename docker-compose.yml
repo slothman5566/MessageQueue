@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  messagequeue.web:
+    image: ${DOCKER_REGISTRY-}messagequeueweb
+    build:
+      context: .
+      dockerfile: MessageQueue/Dockerfile
+
+  distributedcache:
+    image: redis
+
+
