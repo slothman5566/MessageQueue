@@ -1,0 +1,6 @@
+@MessageQueue.Cart_HostAddress = http://localhost:5169
+
+GET {{MessageQueue.Cart_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
