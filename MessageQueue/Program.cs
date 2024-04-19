@@ -1,7 +1,4 @@
 using MessageQueue.Web.Models;
-using MessageQueue.Web.Service;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
