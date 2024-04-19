@@ -6,8 +6,21 @@ services:
     build:
       context: .
       dockerfile: MessageQueue/Dockerfile
+  
+
+  messagequeue.book:
+    image: ${DOCKER_REGISTRY-}messagequeuebook
+    build:
+      context: .
+      dockerfile: MessageQueue.Book/Dockerfile
+    
+
+  messagequeue.cart:
+    image: ${DOCKER_REGISTRY-}messagequeuecart
+    build:
+      context: .
+      dockerfile: MessageQueue.Cart/Dockerfile
+    
 
   distributedcache:
     image: redis
-
-
