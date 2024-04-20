@@ -9,17 +9,17 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["MessageQueue/MessageQueue.csproj", "MessageQueue/"]
-RUN dotnet restore "./MessageQueue/MessageQueue.csproj"
+COPY ["MessageQueue.Web/MessageQueue.Web.csproj", "MessageQueue.Web/"]
+RUN dotnet restore "./MessageQueue.Web/MessageQueue.Web.csproj"
 COPY . .
-WORKDIR "/src/MessageQueue"
-RUN dotnet build "./MessageQueue.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/MessageQueue.Web"
+RUN dotnet build "./MessageQueue.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./MessageQueue.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./MessageQueue.Web.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "MessageQueue.dll"]
+ENTRYPOINT ["dotnet", "MessageQueue.Web.dll"]

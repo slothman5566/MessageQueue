@@ -3,15 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageQueue.Web", "MessageQueue\MessageQueue.Web.csproj", "{C62957A7-B659-4ECF-9B2C-A93E5E328A4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageQueue.Web", "MessageQueue.Web\MessageQueue.Web.csproj", "{C62957A7-B659-4ECF-9B2C-A93E5E328A4F}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E4ABF897-844F-4826-9BAF-F184C6961CBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageQueue.Cart", "MessageQueue.Cart\MessageQueue.Cart.csproj", "{4DB74F45-48C6-47A6-BBED-AE10A1164D04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageQueue.Cart", "MessageQueue.Cart\MessageQueue.Cart.csproj", "{4DB74F45-48C6-47A6-BBED-AE10A1164D04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageQueue.Book", "MessageQueue.Book\MessageQueue.Book.csproj", "{E1234B32-2060-41B2-80A9-C10122CDADBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageQueue.Book", "MessageQueue.Book\MessageQueue.Book.csproj", "{E1234B32-2060-41B2-80A9-C10122CDADBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageQueue.Core", "MessageQueue.Core\MessageQueue.Core.csproj", "{EDBE74D6-26C4-44E1-8E00-CBFE817A7051}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageQueue.Core", "MessageQueue.Core\MessageQueue.Core.csproj", "{EDBE74D6-26C4-44E1-8E00-CBFE817A7051}"
+EndProject
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
