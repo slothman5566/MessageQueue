@@ -27,3 +27,5 @@ services:
   
   nginx:
     image: nginx
+  messagebroker:
+    image: rabbitmq:management
