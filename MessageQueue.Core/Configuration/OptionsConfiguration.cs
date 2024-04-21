@@ -10,7 +10,7 @@ namespace MessageQueue.Core.Configuration
 
         public static IServiceCollection AddOptionsConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddOptions<MessageQueueConnection>().Bind(configuration.GetSection(nameof(MessageQueueConnection)));
+            services.AddOptions<MessageQueueConnection>().Bind(configuration.GetSection(MessageQueueConnection.Key));
 
             return services;
         }
