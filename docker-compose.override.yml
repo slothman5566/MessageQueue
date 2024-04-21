@@ -28,6 +28,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Redis=distributedcache:6379
     ports:
       - "6000:8080"
       - "6061:8081"
@@ -59,8 +60,9 @@ services:
       - ./files:/usr/share/nginx/html
     depends_on:
       - messagequeue.web
-      - messagequeue.cart 
+      - messagequeue.book 
     restart: always
+
   messagebroker:
     container_name: messagebroker
     environment:
