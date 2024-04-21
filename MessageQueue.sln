@@ -13,6 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageQueue.Book", "Messag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageQueue.Core", "MessageQueue.Core\MessageQueue.Core.csproj", "{EDBE74D6-26C4-44E1-8E00-CBFE817A7051}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nginx", "Nginx", "{E02536D8-77C5-4AF9-9268-E580987D360F}"
+	ProjectSection(SolutionItems) = preProject
+		Nginx\library.com+4-key.pem = Nginx\library.com+4-key.pem
+		Nginx\library.com+4.pem = Nginx\library.com+4.pem
+		Nginx\nginx.conf = Nginx\nginx.conf
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
