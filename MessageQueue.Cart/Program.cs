@@ -1,7 +1,11 @@
 using MessageQueue.Cart.Repository.Implement;
 using MessageQueue.Cart.Repository.Interface;
 using MessageQueue.Core.Configuration;
+using MessageQueue.Core.Dto;
+using MessageQueue.Core.MessageBus;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using static MessageQueue.Core.Options.BaseMessageBroker;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOptionsConfiguration(builder.Configuration);
 builder.Services.AddCacheConfiguration(builder.Configuration);
+builder.Services.AddMessageBrokerConfiguration(builder.Configuration);
 builder.Services.AddScoped<IBooksCartRepository, BooksCartCacheRepository>();
 
 var app = builder.Build();
@@ -30,11 +35,16 @@ app.MapGet("GetCart", ([FromQuery] Guid id, IBooksCartRepository repo) =>
     return repo.GetCart(id);
 });
 
-app.MapPost("CreateCart", ([FromBody] MessageQueue.Cart.Model.BooksCart cart, IBooksCartRepository repo) =>
+app.MapPost("CreateCart", ([FromBody] MessageQueue.Cart.Model.BooksCart cart, IBooksCartRepository repo, IMessageBus bus, IOptions<BooksCartMessageBroker> options) =>
 {
     cart.Id = Guid.NewGuid();
     cart.Items.ForEach(x => x.BooksCartId = cart.Id);
     cart.CreatedAt = DateTime.UtcNow;
+    bus.Publish(new BooksCartDto()
+    {
+        CartId = cart.Id,
+        List = cart.Items.Select(s => new BooksCartItemDto() { BookId = s.BookId, Quantity = s.Quantity }).ToList()
+    }, options.Value);
     return repo.AddCart(cart);
 });
 app.UseHttpsRedirection();
