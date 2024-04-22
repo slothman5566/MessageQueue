@@ -1,6 +1,7 @@
 using MessageQueue.Book.Data;
 using MessageQueue.Book.Repository.Implement;
 using MessageQueue.Book.Repository.Interface;
+using MessageQueue.Book.Service;
 using MessageQueue.Core.Configuration;
 using Microsoft.AspNetCore.Mvc;
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOptionsConfiguration(builder.Configuration);
 builder.Services.AddCacheConfiguration(builder.Configuration);
 builder.Services.AddScoped<IBookRepository, BookCacheRepository>();
+
+builder.Services.AddHostedService<RabbitMCartConsumerService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
