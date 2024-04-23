@@ -1,15 +1,9 @@
-﻿
-using MessageQueue.Core.Dto;
-using MessageQueue.Core.Options;
+﻿using MessageQueue.Core.Options;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
-using System.Text.Json;
-using System.Threading.Channels;
-using static MessageQueue.Core.Options.BaseMessageBroker;
 
 namespace MessageQueue.Book.Service
 {
