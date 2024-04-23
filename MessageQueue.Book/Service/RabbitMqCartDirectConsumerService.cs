@@ -7,16 +7,16 @@ using System.Text;
 
 namespace MessageQueue.Book.Service
 {
-    public class RabbitMqCartOrderConsumerService : BackgroundService
+    public class RabbitMqCartDirectConsumerService : BackgroundService
     {
         private readonly MessageQueueConnection _config;
         private readonly BooksCartMessageBroker _broker;
-        private readonly ILogger<RabbitMqCartOrderConsumerService> _logger;
+        private readonly ILogger<RabbitMqCartDirectConsumerService> _logger;
         private readonly IDistributedCache _distributedCache;
-        public RabbitMqCartOrderConsumerService(IOptions<MessageQueueConnection> options,
+        public RabbitMqCartDirectConsumerService(IOptions<MessageQueueConnection> options,
             IOptions<BooksCartMessageBroker> borkerConfig,
             IDistributedCache cache,
-            ILogger<RabbitMqCartOrderConsumerService> logger)
+            ILogger<RabbitMqCartDirectConsumerService> logger)
         {
             _distributedCache = cache;
             _config = options.Value;
