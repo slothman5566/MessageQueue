@@ -33,7 +33,8 @@ namespace MessageQueue.Book.Service
             };
             var connection = factor.CreateConnection();
             var channel = connection.CreateModel();
-            channel.QueueDeclare(_broker.RoutingKey, false, false, false, null);
+            channel.ExchangeDeclare(_broker.Exchange, ExchangeType.Direct);
+            channel.QueueDeclare(_broker.Queue, false, false, false, null);
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (ch, ea) =>
             {
@@ -43,7 +44,8 @@ namespace MessageQueue.Book.Service
                 channel.BasicAck(ea.DeliveryTag, false);
             };
 
-            channel.BasicConsume(_broker.RoutingKey, false, consumer);
+            channel.BasicConsume(_broker.Queue, false, consumer);
+            channel.QueueBind(_broker.Queue, _broker.Exchange, _broker.RoutingKey);
             await Task.Delay(Timeout.Infinite, stoppingToken);
         }
        

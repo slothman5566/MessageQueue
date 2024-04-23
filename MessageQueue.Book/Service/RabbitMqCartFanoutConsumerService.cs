@@ -39,7 +39,7 @@ namespace MessageQueue.Book.Service
             channel.ExchangeDeclare(_logConfig.Exchange, ExchangeType.Fanout);
             for (var i = 0; i < 10; i++)
             {
-                var queueName = $"{_logConfig.RoutingKey}_{i}";
+                var queueName = $"{_logConfig.Queue}_{i}";
                 channel.QueueDeclare(queueName, false, false, false, null);
                 var consumer = new EventingBasicConsumer(channel);
                 consumer.Received += (ch, ea) =>
@@ -49,7 +49,7 @@ namespace MessageQueue.Book.Service
                     channel.BasicAck(ea.DeliveryTag, false);
                 };
                 channel.BasicConsume(queueName, false, consumer);
-                channel.QueueBind(queueName, _logConfig.Exchange, queueName);
+                channel.QueueBind(queueName, _logConfig.Exchange, _logConfig.RoutingKey);
             }
 
 
