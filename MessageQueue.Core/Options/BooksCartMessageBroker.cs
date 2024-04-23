@@ -11,5 +11,8 @@
     {
         public static string Key => nameof(BooksCartMessageBroker);
     }
+    public class BooksCartLogBroker : BaseMessageBroker
+    {
+        public static string Key => nameof(BooksCartLogBroker);
     }
 }

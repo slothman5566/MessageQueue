@@ -13,6 +13,7 @@ namespace MessageQueue.Core.Configuration
         {
             services.AddOptions<MessageQueueConnection>().Bind(configuration.GetSection(MessageQueueConnection.Key));
             services.AddOptions<BooksCartMessageBroker>().Bind(configuration.GetSection(BooksCartMessageBroker.Key));
+            services.AddOptions<BooksCartLogBroker>().Bind(configuration.GetSection(BooksCartLogBroker.Key));
             return services;
         }
 
