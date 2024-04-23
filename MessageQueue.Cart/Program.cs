@@ -3,9 +3,9 @@ using MessageQueue.Cart.Repository.Interface;
 using MessageQueue.Core.Configuration;
 using MessageQueue.Core.Dto;
 using MessageQueue.Core.MessageBus;
+using MessageQueue.Core.Options;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using static MessageQueue.Core.Options.BaseMessageBroker;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +35,8 @@ app.MapGet("GetCart", ([FromQuery] Guid id, IBooksCartRepository repo) =>
     return repo.GetCart(id);
 });
 
-app.MapPost("CreateCart", ([FromBody] MessageQueue.Cart.Model.BooksCart cart, IBooksCartRepository repo, IMessageBus bus, IOptions<BooksCartMessageBroker> options) =>
+app.MapPost("CreateCart", ([FromBody] MessageQueue.Cart.Model.BooksCart cart, IBooksCartRepository repo, IMessageBus bus,
+    IOptions<BooksCartMessageBroker> options, IOptions<BooksCartLogBroker> logOptions) =>
 {
     cart.Id = Guid.NewGuid();
     cart.Items.ForEach(x => x.BooksCartId = cart.Id);
@@ -45,6 +46,7 @@ app.MapPost("CreateCart", ([FromBody] MessageQueue.Cart.Model.BooksCart cart, IB
         CartId = cart.Id,
         List = cart.Items.Select(s => new BooksCartItemDto() { BookId = s.BookId, Quantity = s.Quantity }).ToList()
     }, options.Value);
+    bus.Publish($"Send from CreateCart:{DateTime.UtcNow}", logOptions.Value);
     return repo.AddCart(cart);
 });
 app.UseHttpsRedirection();

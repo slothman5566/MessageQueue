@@ -24,10 +24,10 @@ namespace MessageQueue.Core.MessageBus
         public void Publish(object message, BaseMessageBroker messageBroker)
         {
             using var channel = _connection.CreateModel();
-            channel.QueueDeclare(messageBroker.RoutingKey, false, false, false, null);
+            
             var json = JsonSerializer.Serialize(message);
             var body = Encoding.UTF8.GetBytes(json);
-            channel.BasicPublish(exchange: "", routingKey: messageBroker.RoutingKey, null, body: body);
+            channel.BasicPublish(exchange: messageBroker.Exchange, routingKey: messageBroker.RoutingKey, null, body: body);
         }
 
 
