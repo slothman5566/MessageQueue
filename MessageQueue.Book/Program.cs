@@ -16,7 +16,7 @@ builder.Services.AddOptionsConfiguration(builder.Configuration);
 builder.Services.AddCacheConfiguration(builder.Configuration);
 builder.Services.AddScoped<IBookRepository, BookCacheRepository>();
 
-builder.Services.AddHostedService<RabbitMCartConsumerService>();
+builder.Services.AddHostedService<RabbitMqCartOrderConsumerService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

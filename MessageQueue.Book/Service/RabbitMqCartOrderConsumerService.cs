@@ -13,17 +13,16 @@ using static MessageQueue.Core.Options.BaseMessageBroker;
 
 namespace MessageQueue.Book.Service
 {
-    public class RabbitMCartConsumerService : BackgroundService
+    public class RabbitMqCartOrderConsumerService : BackgroundService
     {
         private readonly MessageQueueConnection _config;
         private readonly BooksCartMessageBroker _broker;
-        private readonly ILogger<RabbitMCartConsumerService> _logger;
+        private readonly ILogger<RabbitMqCartOrderConsumerService> _logger;
         private readonly IDistributedCache _distributedCache;
-        public RabbitMCartConsumerService(IOptions<MessageQueueConnection> options,
-            IConfiguration configuration,
+        public RabbitMqCartOrderConsumerService(IOptions<MessageQueueConnection> options,
             IOptions<BooksCartMessageBroker> borkerConfig,
             IDistributedCache cache,
-            ILogger<RabbitMCartConsumerService> logger)
+            ILogger<RabbitMqCartOrderConsumerService> logger)
         {
             _distributedCache = cache;
             _config = options.Value;
