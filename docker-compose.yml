@@ -27,5 +27,11 @@ services:
   
   nginx:
     image: nginx
+
   messagebroker:
     image: rabbitmq:management
+
+  postgresql-master:
+    image: 'bitnami/postgresql:latest'
+volumes:
+  postgres_library:
