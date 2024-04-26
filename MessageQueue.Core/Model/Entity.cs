@@ -1,4 +1,4 @@
-﻿namespace MessageQueue.Core.Data.Model
+﻿namespace MessageQueue.Core.Model
 {
     public class Entity<T> : IEntity<T>
     {

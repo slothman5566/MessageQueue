@@ -1,12 +1,7 @@
-﻿using MessageQueue.Core.Data.Model;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using MessageQueue.Core.Model;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace MessageQueue.Core.Data.Interceptor
 {
