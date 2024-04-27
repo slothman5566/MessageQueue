@@ -1,3 +1,4 @@
+using MessageQueue.Book.Configurtion;
 using MessageQueue.Book.Data;
 using MessageQueue.Book.Repository.Implement;
 using MessageQueue.Book.Repository.Interface;
@@ -18,6 +19,8 @@ builder.Services.AddScoped<IBookRepository, BookCacheRepository>();
 
 builder.Services.AddHostedService<RabbitMqCartDirectConsumerService>();
 builder.Services.AddHostedService<RabbitMqCartFanoutConsumerService>();
+builder.Services.AddDbContextConfiguration(builder.Configuration);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
