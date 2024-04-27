@@ -13,17 +13,17 @@ namespace MessageQueue.Book.Model
             {
                 throw new Exception("BookId cannot be empty.");
             }
-
             return new BookId(value);
         }
     }
+
     public class Book : Entity<BookId>
     {
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
-        public string Author { get; set; }
+        public string? Author { get; set; }
 
         public DateTime PublishDate { get; set; }
     }
