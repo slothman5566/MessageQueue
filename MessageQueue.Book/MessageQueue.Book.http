@@ -1,6 +1,0 @@
-@MessageQueue.Book_HostAddress = http://localhost:5167
-
-GET {{MessageQueue.Book_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
