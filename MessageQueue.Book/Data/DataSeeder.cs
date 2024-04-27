@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
+﻿using MessageQueue.Book.Model;
+using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 
 namespace MessageQueue.Book.Data
@@ -13,17 +14,17 @@ namespace MessageQueue.Book.Data
             {
                 new()
                 {
-                    Id=Guid.NewGuid(),
+                    Id=BookId.Of(Guid.NewGuid()),
                     Title="A"
                 },
                 new()
                 {
-                    Id=Guid.NewGuid(),
+                    Id=BookId.Of(Guid.NewGuid()),
                     Title="B"
                 },
                 new()
                 {
-                    Id=Guid.NewGuid(),
+                    Id=BookId.Of(Guid.NewGuid()),
                     Title="C"
                 }
             };
