@@ -30,6 +30,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 await app.SeedData();
+app.UseMigration();
 app.UseHttpsRedirection();
 
 
