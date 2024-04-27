@@ -6,6 +6,6 @@ namespace MessageQueue.Book.Data.Db
     {
         DbSet<Model.Book> Books { get; }
 
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }
