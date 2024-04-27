@@ -1,6 +1,7 @@
 using MessageQueue.Book.Configurtion;
 using MessageQueue.Book.Data;
 using MessageQueue.Book.Model;
+using MessageQueue.Book.Repository;
 using MessageQueue.Book.Repository.Implement;
 using MessageQueue.Book.Repository.Interface;
 using MessageQueue.Book.Service;
@@ -17,8 +18,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddOptionsConfiguration(builder.Configuration);
 builder.Services.AddCacheConfiguration(builder.Configuration);
-builder.Services.AddScoped<IBookRepository, BookCacheRepository>();
-
+builder.Services.AddUnitOfWork();
 builder.Services.AddHostedService<RabbitMqCartDirectConsumerService>();
 builder.Services.AddHostedService<RabbitMqCartFanoutConsumerService>();
 builder.Services.AddDbContextConfiguration(builder.Configuration);
@@ -45,7 +45,7 @@ app.MapGet("GetBook", ([FromQuery] Guid id, IBookRepository repo) =>
 {
     return repo.GetById(BookId.Of(id));
 });
-app.MapPost("CreateBook",  ([FromBody] BookCreateView view, IBookRepository repo) =>
+app.MapPost("CreateBook", ([FromBody] BookCreateView view, IBookRepository repo) =>
 {
     var book = new Book()
     {
@@ -55,10 +55,10 @@ app.MapPost("CreateBook",  ([FromBody] BookCreateView view, IBookRepository repo
         Title = view.Title,
         PublishDate = view.PublishDate,
     };
-    return  repo.Add(book);
+    return repo.Add(book);
 });
 
-app.MapPatch("UpdateBook", async Task<IResult>([FromBody] BookUpdateView view, IBookRepository repo) =>
+app.MapPatch("UpdateBook", async Task<IResult> ([FromBody] BookUpdateView view, IBookRepository repo) =>
 {
     var book = await repo.GetById(BookId.Of(view.Id));
     if (book == null)
@@ -69,7 +69,7 @@ app.MapPatch("UpdateBook", async Task<IResult>([FromBody] BookUpdateView view, I
     book.Description = view.Description;
     book.PublishDate = view.PublishDate;
     book.Title = view.Title;
-      await repo.Update(book);
+    await repo.Update(book);
     return Results.Ok();
 });
 app.Run();
