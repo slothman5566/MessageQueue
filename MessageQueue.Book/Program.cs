@@ -1,5 +1,6 @@
 using MessageQueue.Book.Configurtion;
 using MessageQueue.Book.Data;
+using MessageQueue.Book.Model;
 using MessageQueue.Book.Repository.Implement;
 using MessageQueue.Book.Repository.Interface;
 using MessageQueue.Book.Service;
@@ -37,10 +38,10 @@ app.UseHttpsRedirection();
 
 app.MapGet("GetAllBooks", (IBookRepository repo) =>
 {
-    return repo.GetAllBooks();
+    return repo.GetAllAsync();
 });
 app.MapGet("GetBook", ([FromQuery] Guid id, IBookRepository repo) =>
 {
-    return repo.GetBook(id);
+    return repo.GetById(BookId.Of(id));
 });
 app.Run();

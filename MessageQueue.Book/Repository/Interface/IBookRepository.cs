@@ -1,9 +1,9 @@
-﻿namespace MessageQueue.Book.Repository.Interface
-{
-    public interface IBookRepository
-    {
-        public Task<Model.Book?> GetBook(Guid id);
+﻿using MessageQueue.Book.Model;
+using MessageQueue.Core.Repository;
 
-        public Task<List<Model.Book>> GetAllBooks();
+namespace MessageQueue.Book.Repository.Interface
+{
+    public interface IBookRepository : IGenericRepository<Model.Book, BookId>
+    {
     }
 }
