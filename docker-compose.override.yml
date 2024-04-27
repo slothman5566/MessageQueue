@@ -29,6 +29,7 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__Redis=distributedcache:6379
+      - ConnectionStrings__Database=Server=postgresql-master;Port=5432;Database=librarydatabase;User Id=user;Password=password;TrustServerCertificate=True
     ports:
       - "6000:8080"
       - "6061:8081"
@@ -37,6 +38,8 @@ services:
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     depends_on:
       - messagebroker
+      - postgresql-master 
+
   messagequeue.cart:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -75,6 +78,7 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+
   postgresql-master:
     container_name: postgresql-master
     ports:
