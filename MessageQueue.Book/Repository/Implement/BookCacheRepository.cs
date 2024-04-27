@@ -15,11 +15,7 @@ namespace MessageQueue.Book.Repository.Implement
             _bookRepository = bookRepository;
         }
 
-        public async Task Add(Model.Book entity)
-        {
-            await _bookRepository.Add(entity);
-            await _cache.SetStringAsync($"Book:{entity.Id}", JsonSerializer.Serialize(entity));
-        }
+
 
         public async Task<List<Model.Book>> GetAllAsync()
         {
@@ -48,16 +44,30 @@ namespace MessageQueue.Book.Repository.Implement
             return book;
         }
 
+        public async Task Add(Model.Book entity)
+        {
+            await _bookRepository.Add(entity);
+            await _cache.SetStringAsync($"Book:{entity.Id}", JsonSerializer.Serialize(entity));
+            await RemoveBooksCache();
+        }
+
         public async Task Remove(Model.Book entity)
         {
             await _bookRepository.Remove(entity);
             await _cache.RemoveAsync($"Book:{entity.Id}");
+            await RemoveBooksCache();
         }
 
         public async Task Update(Model.Book entity)
         {
             await _bookRepository.Update(entity);
             await _cache.SetStringAsync($"Book:{entity.Id}", JsonSerializer.Serialize(entity));
+            await RemoveBooksCache();
+        }
+
+        private Task RemoveBooksCache()
+        {
+            return _cache.RemoveAsync("Books");
         }
     }
 }

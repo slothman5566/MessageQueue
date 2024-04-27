@@ -4,6 +4,7 @@ using MessageQueue.Book.Model;
 using MessageQueue.Book.Repository;
 using MessageQueue.Book.Repository.Implement;
 using MessageQueue.Book.Repository.Interface;
+using MessageQueue.Book.Repository.UnitOfWork;
 using MessageQueue.Book.Service;
 using MessageQueue.Book.ViewModel;
 using MessageQueue.Core.Configuration;
@@ -37,15 +38,15 @@ await app.SeedData();
 app.UseHttpsRedirection();
 
 
-app.MapGet("GetAllBooks", (IBookRepository repo) =>
+app.MapGet("GetAllBooks", (IUnitOfWork uow) =>
 {
-    return repo.GetAllAsync();
+    return uow.BookRepository.GetAllAsync();
 });
-app.MapGet("GetBook", ([FromQuery] Guid id, IBookRepository repo) =>
+app.MapGet("GetBook", ([FromQuery] Guid id, IUnitOfWork uow) =>
 {
-    return repo.GetById(BookId.Of(id));
+    return uow.BookRepository.GetById(BookId.Of(id));
 });
-app.MapPost("CreateBook", ([FromBody] BookCreateView view, IBookRepository repo) =>
+app.MapPost("CreateBook", async ([FromBody] BookCreateView view, IUnitOfWork uow) =>
 {
     var book = new Book()
     {
@@ -55,12 +56,14 @@ app.MapPost("CreateBook", ([FromBody] BookCreateView view, IBookRepository repo)
         Title = view.Title,
         PublishDate = view.PublishDate,
     };
-    return repo.Add(book);
+    await uow.BookRepository.Add(book);
+    await uow.SaveChangeAsync();
+    return Results.Ok();
 });
 
-app.MapPatch("UpdateBook", async Task<IResult> ([FromBody] BookUpdateView view, IBookRepository repo) =>
+app.MapPatch("UpdateBook", async Task<IResult> ([FromBody] BookUpdateView view, IUnitOfWork uow) =>
 {
-    var book = await repo.GetById(BookId.Of(view.Id));
+    var book = await uow.BookRepository.GetById(BookId.Of(view.Id));
     if (book == null)
     {
         throw new NullReferenceException();
@@ -69,7 +72,20 @@ app.MapPatch("UpdateBook", async Task<IResult> ([FromBody] BookUpdateView view, 
     book.Description = view.Description;
     book.PublishDate = view.PublishDate;
     book.Title = view.Title;
-    await repo.Update(book);
+    await uow.BookRepository.Update(book);
+    await uow.SaveChangeAsync();
+    return Results.Ok();
+});
+
+app.MapDelete("DeleteBook", async Task<IResult> ([FromQuery] Guid id, IUnitOfWork uow) =>
+{
+    var book = await uow.BookRepository.GetById(BookId.Of(id));
+    if (book == null)
+    {
+        throw new NullReferenceException();
+    }
+    await uow.BookRepository.Remove(book);
+    await uow.SaveChangeAsync();
     return Results.Ok();
 });
 app.Run();
