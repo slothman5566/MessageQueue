@@ -18,8 +18,7 @@ namespace MessageQueue.Book.Configurtion
                 options.UseNpgsql(configuration.GetConnectionString("Database"));
             });
 
-            services.AddScoped<ILibraryDbContext, LibraryDbContext>();
-
+           
             return services;
         }
     }

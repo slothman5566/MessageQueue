@@ -5,9 +5,9 @@ namespace MessageQueue.Book.Repository.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly ILibraryDbContext _db;
+        private readonly LibraryDbContext _db;
         private readonly IBookRepository _bookRepository;
-        public UnitOfWork(ILibraryDbContext libraryDb, IBookRepository bookRepository)
+        public UnitOfWork(LibraryDbContext libraryDb, IBookRepository bookRepository)
         {
             _db = libraryDb;
             _bookRepository = bookRepository;

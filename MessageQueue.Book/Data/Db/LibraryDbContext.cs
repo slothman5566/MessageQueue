@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace MessageQueue.Book.Data.Db
 {
-    public class LibraryDbContext : BaseDbContext, ILibraryDbContext
+    public class LibraryDbContext : BaseDbContext
     {
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options) : base(options) { }
 
