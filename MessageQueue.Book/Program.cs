@@ -1,14 +1,17 @@
+using MediatR;
 using MessageQueue.Book.Configurtion;
+using MessageQueue.Book.CQRS.Command.CreateBook;
+using MessageQueue.Book.CQRS.Command.DeleteBook;
+using MessageQueue.Book.CQRS.Command.UpdateBook;
+using MessageQueue.Book.CQRS.Query.GetAllBooks;
+using MessageQueue.Book.CQRS.Query.GetBook;
 using MessageQueue.Book.Data;
-using MessageQueue.Book.Model;
 using MessageQueue.Book.Repository;
-using MessageQueue.Book.Repository.Implement;
-using MessageQueue.Book.Repository.Interface;
-using MessageQueue.Book.Repository.UnitOfWork;
 using MessageQueue.Book.Service;
 using MessageQueue.Book.ViewModel;
 using MessageQueue.Core.Configuration;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -23,6 +26,7 @@ builder.Services.AddUnitOfWork();
 builder.Services.AddHostedService<RabbitMqCartDirectConsumerService>();
 builder.Services.AddHostedService<RabbitMqCartFanoutConsumerService>();
 builder.Services.AddDbContextConfiguration(builder.Configuration);
+builder.Services.AddMediatorConfiguration(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 
@@ -38,54 +42,44 @@ await app.SeedData();
 app.UseHttpsRedirection();
 
 
-app.MapGet("GetAllBooks", (IUnitOfWork uow) =>
+app.MapGet("GetAllBooks", (ISender sender) =>
 {
-    return uow.BookRepository.GetAllAsync();
+    return sender.Send(new GetAllBooksQuery());
 });
-app.MapGet("GetBook", ([FromQuery] Guid id, IUnitOfWork uow) =>
+app.MapGet("GetBook", ([FromQuery] Guid id, ISender sender) =>
 {
-    return uow.BookRepository.GetById(BookId.Of(id));
+    return sender.Send(new GetBookQuery(id));
 });
-app.MapPost("CreateBook", async ([FromBody] BookCreateView view, IUnitOfWork uow) =>
+app.MapPost("CreateBook", async ([FromBody] BookCreateView view, ISender sender) =>
 {
-    var book = new Book()
+    var book = new CreateBookCommand()
     {
         Author = view.Author,
         Description = view.Description,
-        Id = BookId.Of(Guid.NewGuid()),
         Title = view.Title,
         PublishDate = view.PublishDate,
     };
-    await uow.BookRepository.Add(book);
-    await uow.SaveChangeAsync();
+    await sender.Send(book);
     return Results.Ok();
 });
 
-app.MapPatch("UpdateBook", async Task<IResult> ([FromBody] BookUpdateView view, IUnitOfWork uow) =>
+app.MapPatch("UpdateBook", async Task<IResult> ([FromBody] BookUpdateView view, ISender sender) =>
 {
-    var book = await uow.BookRepository.GetById(BookId.Of(view.Id));
-    if (book == null)
+    var book = new UpdateBookCommand()
     {
-        throw new NullReferenceException();
-    }
-    book.Author = view.Author;
-    book.Description = view.Description;
-    book.PublishDate = view.PublishDate;
-    book.Title = view.Title;
-    await uow.BookRepository.Update(book);
-    await uow.SaveChangeAsync();
+        Id = view.Id,
+        Author = view.Author,
+        Description = view.Description,
+        Title = view.Title,
+        PublishDate = view.PublishDate,
+    };
+    await sender.Send(book);
     return Results.Ok();
 });
 
-app.MapDelete("DeleteBook", async Task<IResult> ([FromQuery] Guid id, IUnitOfWork uow) =>
+app.MapDelete("DeleteBook", async Task<IResult> ([FromQuery] Guid id, ISender sender) =>
 {
-    var book = await uow.BookRepository.GetById(BookId.Of(id));
-    if (book == null)
-    {
-        throw new NullReferenceException();
-    }
-    await uow.BookRepository.Remove(book);
-    await uow.SaveChangeAsync();
+    await sender.Send(new DeleteBookCommand(id));
     return Results.Ok();
 });
 app.Run();
