@@ -1,17 +1,18 @@
-﻿using MediatR;
+﻿using MapsterMapper;
+using MediatR;
 using MessageQueue.Book.Model;
 using MessageQueue.Book.Repository.UnitOfWork;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace MessageQueue.Book.CQRS.Command.UpdateBook
 {
     public class UpdateBookHandler : IRequestHandler<UpdateBookCommand>
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public UpdateBookHandler(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public UpdateBookHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         public async Task Handle(UpdateBookCommand request, CancellationToken cancellationToken)
         {
@@ -20,10 +21,7 @@ namespace MessageQueue.Book.CQRS.Command.UpdateBook
             {
                 throw new NullReferenceException();
             }
-            book.Author = request.Author;
-            book.Description = request.Description;
-            book.PublishDate = request.PublishDate;
-            book.Title = request.Title;
+            book = _mapper.Map(request, book);
             await _unitOfWork.BookRepository.Update(book);
             await _unitOfWork.SaveChangeAsync();
         }

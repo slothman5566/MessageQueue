@@ -1,3 +1,4 @@
+using MapsterMapper;
 using MediatR;
 using MessageQueue.Book.Configurtion;
 using MessageQueue.Book.CQRS.Command.CreateBook;
@@ -27,6 +28,7 @@ builder.Services.AddHostedService<RabbitMqCartDirectConsumerService>();
 builder.Services.AddHostedService<RabbitMqCartFanoutConsumerService>();
 builder.Services.AddDbContextConfiguration(builder.Configuration);
 builder.Services.AddMediatorConfiguration(Assembly.GetExecutingAssembly());
+builder.Services.AddMapsterConfiguration(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 
@@ -50,29 +52,16 @@ app.MapGet("GetBook", ([FromQuery] Guid id, ISender sender) =>
 {
     return sender.Send(new GetBookQuery(id));
 });
-app.MapPost("CreateBook", async ([FromBody] BookCreateView view, ISender sender) =>
+app.MapPost("CreateBook", async ([FromBody] BookCreateView view, IMapper mapper, ISender sender) =>
 {
-    var book = new CreateBookCommand()
-    {
-        Author = view.Author,
-        Description = view.Description,
-        Title = view.Title,
-        PublishDate = view.PublishDate,
-    };
+    var book = mapper.Map<CreateBookCommand>(view);
     await sender.Send(book);
     return Results.Ok();
 });
 
-app.MapPatch("UpdateBook", async Task<IResult> ([FromBody] BookUpdateView view, ISender sender) =>
+app.MapPatch("UpdateBook", async Task<IResult> ([FromBody] BookUpdateView view, IMapper mapper, ISender sender) =>
 {
-    var book = new UpdateBookCommand()
-    {
-        Id = view.Id,
-        Author = view.Author,
-        Description = view.Description,
-        Title = view.Title,
-        PublishDate = view.PublishDate,
-    };
+    var book = mapper.Map<UpdateBookCommand>(view);
     await sender.Send(book);
     return Results.Ok();
 });
