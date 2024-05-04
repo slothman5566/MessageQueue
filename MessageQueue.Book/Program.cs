@@ -1,3 +1,4 @@
+using FluentValidation;
 using MapsterMapper;
 using MediatR;
 using MessageQueue.Book.Configurtion;
@@ -11,6 +12,7 @@ using MessageQueue.Book.Repository;
 using MessageQueue.Book.Service;
 using MessageQueue.Book.ViewModel;
 using MessageQueue.Core.Configuration;
+using MessageQueue.Core.Exceptions.Handler;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +31,8 @@ builder.Services.AddHostedService<RabbitMqCartFanoutConsumerService>();
 builder.Services.AddDbContextConfiguration(builder.Configuration);
 builder.Services.AddMediatorConfiguration(Assembly.GetExecutingAssembly());
 builder.Services.AddMapsterConfiguration(Assembly.GetExecutingAssembly());
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+builder.Services.AddExceptionHandler<BaseExceptionHandler>();
 
 var app = builder.Build();
 
@@ -42,7 +46,7 @@ if (app.Environment.IsDevelopment())
 app.UseMigration();
 await app.SeedData();
 app.UseHttpsRedirection();
-
+app.UseExceptionHandler(options => { });
 
 app.MapGet("GetAllBooks", (ISender sender) =>
 {
