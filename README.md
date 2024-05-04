@@ -17,6 +17,7 @@
 
 使用MediatR來做CQRS模式
 
+使用Mapster作為Mapper
 
 ## 專案架構
 - Messagequeue.Core:核心專案,會放入共用項目
@@ -37,3 +38,4 @@
 - EF.Core
 - Scrutor
 - MediatR
+- Mapster
