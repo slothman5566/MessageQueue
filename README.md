@@ -19,6 +19,10 @@
 
 使用Mapster作為Mapper
 
+使用FluentValidation作為驗證器,且在MediatR加入ValidationBehavior
+
+使用ExceptionHandler處理API錯誤
+
 ## 專案架構
 - Messagequeue.Core:核心專案,會放入共用項目
 - Messagequeue.Book:書本微服務
@@ -39,3 +43,4 @@
 - Scrutor
 - MediatR
 - Mapster
+- FluentValidation
