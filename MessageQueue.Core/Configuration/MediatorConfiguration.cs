@@ -15,7 +15,9 @@ namespace MessageQueue.Core.Configuration
                 {
                     config.RegisterServicesFromAssembly(assembly);
                 }
+                config.AddOpenBehavior(typeof(ValidationBehavior<,>));
                 config.AddOpenBehavior(typeof(LogBehavior<,>));
+
                 config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
 
             });
