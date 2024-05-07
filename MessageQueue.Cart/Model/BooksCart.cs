@@ -1,11 +1,30 @@
-﻿namespace MessageQueue.Cart.Model
+﻿using MessageQueue.Core.Model;
+using System.Text.Json.Serialization;
+
+namespace MessageQueue.Cart.Model
 {
-    public class BooksCart
+
+    public record BooksCartId : EntityId<Guid>
     {
-        public Guid Id { get; set; }
+        [JsonConstructor]
+        protected BooksCartId(Guid value) : base(value)
+        {
 
-        public DateTime CreatedAt { get; set; }
+        }
 
+        public static BooksCartId Of(Guid value)
+        {
+            ArgumentNullException.ThrowIfNull(value);
+            if (value == Guid.Empty)
+            {
+                throw new Exception("BooksCartId cannot be empty.");
+            }
+            return new BooksCartId(value);
+        }
+    }
+
+    public class BooksCart:Entity<BooksCartId>
+    {
         public List<BooksCartItem> Items { get; set; }
     }
 }

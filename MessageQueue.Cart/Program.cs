@@ -1,3 +1,4 @@
+using MessageQueue.Cart.Model;
 using MessageQueue.Cart.Repository.Implement;
 using MessageQueue.Cart.Repository.Interface;
 using MessageQueue.Core.Configuration;
@@ -38,13 +39,13 @@ app.MapGet("GetCart", ([FromQuery] Guid id, IBooksCartRepository repo) =>
 app.MapPost("CreateCart", ([FromBody] MessageQueue.Cart.Model.BooksCart cart, IBooksCartRepository repo, IMessageBus bus,
     IOptions<BooksCartMessageBroker> options, IOptions<BooksCartLogBroker> logOptions) =>
 {
-    cart.Id = Guid.NewGuid();
-    cart.Items.ForEach(x => x.BooksCartId = cart.Id);
+    cart.Id = BooksCartId.Of(Guid.NewGuid());
+    cart.Items.ForEach(x => x.BooksCartId = cart.Id.Value);
     cart.CreatedAt = DateTime.UtcNow;
     bus.Publish(new BooksCartDto()
     {
-        CartId = cart.Id,
-        List = cart.Items.Select(s => new BooksCartItemDto() { BookId = s.BookId, Quantity = s.Quantity }).ToList()
+        CartId = cart.Id.Value,
+        List = cart.Items.Select(s => new BooksCartItemDto() { BookId = s.BookId.Value, Quantity = s.Quantity }).ToList()
     }, options.Value);
     bus.Publish($"Send from CreateCart:{DateTime.UtcNow}", logOptions.Value);
     return repo.AddCart(cart);

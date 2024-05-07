@@ -23,7 +23,7 @@ namespace MessageQueue.Cart.Repository.Implement
             }
             list.Add(booksCart);
             await _cache.SetStringAsync("BooksCarts", JsonSerializer.Serialize(list));
-            return booksCart.Id;
+            return booksCart.Id.Value;
         }
 
         public async Task<List<BooksCart>> GetAllBooksCart()
