@@ -46,6 +46,7 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__Redis=distributedcache:6379
+      - ConnectionStrings__Database=Server=postgresql-master;Port=5432;Database=librarydatabase;User Id=user;Password=password;TrustServerCertificate=True
     ports:
       - "7070:8080"
       - "7071:8081"
@@ -54,6 +55,8 @@ services:
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     depends_on:
       - messagebroker
+      - postgresql-master 
+
   nginx:
     container_name: nginx
     ports:
