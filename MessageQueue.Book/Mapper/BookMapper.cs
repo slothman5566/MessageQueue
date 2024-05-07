@@ -2,6 +2,7 @@
 using MessageQueue.Book.CQRS.Command.CreateBook;
 using MessageQueue.Book.CQRS.Command.UpdateBook;
 using MessageQueue.Book.Model;
+using MessageQueue.Book.ViewModel;
 
 namespace MessageQueue.Book.Mapper
 {
@@ -9,8 +10,7 @@ namespace MessageQueue.Book.Mapper
     {
         public void Register(TypeAdapterConfig config)
         {
-            config.NewConfig<BookId, BookId>().MapWith(src => BookId.Of(src.Value));
-            config.NewConfig<Guid, BookId>().MapWith(src => BookId.Of(src));
+            config.NewConfig<Model.Book, BookView>().Map(dest => dest.Id, src => src.Id.Value);
             config.NewConfig<CreateBookCommand, Model.Book>().Map(dest => dest.Id, src => BookId.Of(Guid.NewGuid()));
             config.NewConfig<UpdateBookCommand, Model.Book>().IgnoreNullValues(true);
         }
