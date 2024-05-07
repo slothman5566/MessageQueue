@@ -1,19 +1,11 @@
+using Carter;
 using FluentValidation;
-using MapsterMapper;
-using MediatR;
 using MessageQueue.Book.Configurtion;
-using MessageQueue.Book.CQRS.Command.CreateBook;
-using MessageQueue.Book.CQRS.Command.DeleteBook;
-using MessageQueue.Book.CQRS.Command.UpdateBook;
-using MessageQueue.Book.CQRS.Query.GetAllBooks;
-using MessageQueue.Book.CQRS.Query.GetBook;
 using MessageQueue.Book.Data;
 using MessageQueue.Book.Repository;
 using MessageQueue.Book.Service;
-using MessageQueue.Book.ViewModel;
 using MessageQueue.Core.Configuration;
 using MessageQueue.Core.Exceptions.Handler;
-using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +25,9 @@ builder.Services.AddMediatorConfiguration(Assembly.GetExecutingAssembly());
 builder.Services.AddMapsterConfiguration(Assembly.GetExecutingAssembly());
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddExceptionHandler<BaseExceptionHandler>();
+builder.Services.AddCarter();
+builder.Services.AddControllers();
+
 
 var app = builder.Build();
 
@@ -47,32 +42,6 @@ app.UseMigration();
 await app.SeedData();
 app.UseHttpsRedirection();
 app.UseExceptionHandler(options => { });
+app.MapCarter();
 
-app.MapGet("GetAllBooks", (ISender sender) =>
-{
-    return sender.Send(new GetAllBooksQuery());
-});
-app.MapGet("GetBook", ([FromQuery] Guid id, ISender sender) =>
-{
-    return sender.Send(new GetBookQuery(id));
-});
-app.MapPost("CreateBook", async ([FromBody] BookCreateView view, IMapper mapper, ISender sender) =>
-{
-    var book = mapper.Map<CreateBookCommand>(view);
-    await sender.Send(book);
-    return Results.Ok();
-});
-
-app.MapPatch("UpdateBook", async Task<IResult> ([FromBody] BookUpdateView view, IMapper mapper, ISender sender) =>
-{
-    var book = mapper.Map<UpdateBookCommand>(view);
-    await sender.Send(book);
-    return Results.Ok();
-});
-
-app.MapDelete("DeleteBook", async Task<IResult> ([FromQuery] Guid id, ISender sender) =>
-{
-    await sender.Send(new DeleteBookCommand(id));
-    return Results.Ok();
-});
 app.Run();
