@@ -20,6 +20,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nginx", "Nginx", "{E02536D8
 		Nginx\nginx.conf = Nginx\nginx.conf
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Postgres", "Postgres", "{6A2915FA-9368-4733-89F7-3AA35C7E584F}"
+	ProjectSection(SolutionItems) = preProject
+		Postgres\init_db.sql = Postgres\init_db.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
