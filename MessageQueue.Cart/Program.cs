@@ -18,7 +18,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOptionsConfiguration(builder.Configuration);
 builder.Services.AddCacheConfiguration(builder.Configuration);
 builder.Services.AddMessageBrokerConfiguration(builder.Configuration);
-builder.Services.AddScoped<IBooksCartRepository, BooksCartCacheRepository>();
+builder.Services.AddScoped<IBooksCartRepository, BooksCartRepository>();
+builder.Services.Decorate<IBooksCartRepository, BooksCartCacheRepository>();
 builder.Services.AddDbContextConfiguration(builder.Configuration);
 var app = builder.Build();
 
@@ -30,14 +31,14 @@ if (app.Environment.IsDevelopment())
 }
 app.MapGet("GetAllBooksCart", (IBooksCartRepository repo) =>
 {
-    return repo.GetAllBooksCart();
+    return repo.GetAllAsync();
 });
 app.MapGet("GetCart", ([FromQuery] Guid id, IBooksCartRepository repo) =>
 {
-    return repo.GetCart(id);
+    return repo.GetById(BooksCartId.Of(id));
 });
 
-app.MapPost("CreateCart", ([FromBody] MessageQueue.Cart.Model.BooksCart cart, IBooksCartRepository repo, IMessageBus bus,
+app.MapPost("CreateCart", ([FromBody] BooksCart cart, IBooksCartRepository repo, IMessageBus bus,
     IOptions<BooksCartMessageBroker> options, IOptions<BooksCartLogBroker> logOptions) =>
 {
     cart.Id = BooksCartId.Of(Guid.NewGuid());
@@ -49,7 +50,7 @@ app.MapPost("CreateCart", ([FromBody] MessageQueue.Cart.Model.BooksCart cart, IB
         List = cart.Items.Select(s => new BooksCartItemDto() { BookId = s.BookId, Quantity = s.Quantity }).ToList()
     }, options.Value);
     bus.Publish($"Send from CreateCart:{DateTime.UtcNow}", logOptions.Value);
-    return repo.AddCart(cart);
+    return repo.Add(cart);
 });
 app.UseHttpsRedirection();
 

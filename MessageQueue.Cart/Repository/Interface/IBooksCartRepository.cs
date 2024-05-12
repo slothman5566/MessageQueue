@@ -1,11 +1,9 @@
-﻿namespace MessageQueue.Cart.Repository.Interface
+﻿using MessageQueue.Cart.Model;
+using MessageQueue.Core.Repository;
+
+namespace MessageQueue.Cart.Repository.Interface
 {
-    public interface IBooksCartRepository
+    public interface IBooksCartRepository : IGenericRepository<BooksCart, BooksCartId>
     {
-        public Task<Model.BooksCart> GetCart(Guid id);
-
-        public Task<Guid> AddCart(Model.BooksCart booksCart);
-
-        public Task<List<Model.BooksCart?>> GetAllBooksCart();
     }
 }
