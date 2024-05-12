@@ -1,5 +1,6 @@
 using MessageQueue.Cart.Configuration;
 using MessageQueue.Cart.Model;
+using MessageQueue.Cart.Repository;
 using MessageQueue.Cart.Repository.Implement;
 using MessageQueue.Cart.Repository.Interface;
 using MessageQueue.Core.Configuration;
@@ -18,9 +19,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOptionsConfiguration(builder.Configuration);
 builder.Services.AddCacheConfiguration(builder.Configuration);
 builder.Services.AddMessageBrokerConfiguration(builder.Configuration);
-builder.Services.AddScoped<IBooksCartRepository, BooksCartRepository>();
-builder.Services.Decorate<IBooksCartRepository, BooksCartCacheRepository>();
 builder.Services.AddDbContextConfiguration(builder.Configuration);
+builder.Services.AddUnitOfWork();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
