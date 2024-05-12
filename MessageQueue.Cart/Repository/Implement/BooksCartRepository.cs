@@ -2,6 +2,7 @@
 using MessageQueue.Cart.Model;
 using MessageQueue.Cart.Repository.Interface;
 using MessageQueue.Core.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace MessageQueue.Cart.Repository.Implement
 {
@@ -9,6 +10,11 @@ namespace MessageQueue.Cart.Repository.Implement
     {
         public BooksCartRepository(CartDbContext db) : base(db)
         {
+        }
+
+        public override Task<List<BooksCart>> GetAllAsync()
+        {
+            return _db.Set<BooksCart>().Include(i => i.Items).ToListAsync();
         }
     }
 }

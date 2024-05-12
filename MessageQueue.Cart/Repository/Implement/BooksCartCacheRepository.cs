@@ -10,5 +10,7 @@ namespace MessageQueue.Cart.Repository.Implement
         public BooksCartCacheRepository(IDistributedCache cache, IBooksCartRepository repository) : base(cache, repository)
         {
         }
+
+    
     }
 }

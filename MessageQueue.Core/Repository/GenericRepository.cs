@@ -7,7 +7,7 @@ namespace MessageQueue.Core.Repository
     public class GenericRepository<TEntity, T> : IGenericRepository<TEntity, T> where TEntity : Entity<T>
     {
 
-        private readonly BaseDbContext _db;
+        protected readonly BaseDbContext _db;
         public GenericRepository(BaseDbContext db)
         {
             _db = db;
