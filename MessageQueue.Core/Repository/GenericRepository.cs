@@ -12,23 +12,23 @@ namespace MessageQueue.Core.Repository
         {
             _db = db;
         }
-        public Task Add(TEntity entity)
+        public virtual Task Add(TEntity entity)
         {
             _db.Add(entity);
             return Task.CompletedTask;
         }
 
-        public Task<List<TEntity>> GetAllAsync() => _db.Set<TEntity>().ToListAsync();
+        public virtual Task<List<TEntity>> GetAllAsync() => _db.Set<TEntity>().ToListAsync();
 
-        public Task<TEntity?> GetById(T id) => _db.Set<TEntity>().FirstOrDefaultAsync(x => x.Id.Equals(id));
+        public virtual Task<TEntity?> GetById(T id) => _db.Set<TEntity>().FirstOrDefaultAsync(x => x.Id.Equals(id));
 
-        public Task Remove(TEntity entity)
+        public virtual Task Remove(TEntity entity)
         {
             _db.Remove(entity);
             return Task.CompletedTask;
         }
 
-        public Task Update(TEntity entity)
+        public virtual Task Update(TEntity entity)
         {
 
             _db.Update(entity);
