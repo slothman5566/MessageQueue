@@ -29,7 +29,7 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__Redis=distributedcache:6379
-      - ConnectionStrings__Database=Server=postgresql-master;Port=5432;Database=librarydatabase;User Id=user;Password=password;TrustServerCertificate=True
+      - ConnectionStrings__Database=Server=postgresql-master;Port=5432;Database=bookdatabase;User Id=user;Password=password;TrustServerCertificate=True
     ports:
       - "6000:8080"
       - "6061:8081"
@@ -46,7 +46,7 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__Redis=distributedcache:6379
-      - ConnectionStrings__Database=Server=postgresql-master;Port=5432;Database=librarydatabase;User Id=user;Password=password;TrustServerCertificate=True
+      - ConnectionStrings__Database=Server=postgresql-master;Port=5432;Database=cartdatabase;User Id=user;Password=password;TrustServerCertificate=True
     ports:
       - "7070:8080"
       - "7071:8081"
@@ -55,7 +55,7 @@ services:
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     depends_on:
       - messagebroker
-      - postgresql-master 
+      - postgresql-master
 
   nginx:
     container_name: nginx
@@ -90,7 +90,7 @@ services:
     environment:
       - POSTGRESQL_USERNAME=user
       - POSTGRESQL_PASSWORD=password
-      - POSTGRESQL_DATABASE=librarydatabase
     restart: always
     volumes:
       - postgres_library:/var/lib/postgresql/data/ 
+      - ./Postgres/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
