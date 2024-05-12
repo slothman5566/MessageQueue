@@ -5,9 +5,9 @@ using MessageQueue.Core.Repository;
 
 namespace MessageQueue.Cart.Repository.Implement
 {
-    public class BooksCartRepository : GenericRepository<BooksCart, BooksCartId>, IBooksCartRepository
+    public class BooksCartItemRepository : GenericRepository<BooksCartItem, Guid>, IBooksCartItemRepository
     {
-        public BooksCartRepository(CartDbContext db) : base(db)
+        public BooksCartItemRepository(CartDbContext db) : base(db)
         {
         }
     }
