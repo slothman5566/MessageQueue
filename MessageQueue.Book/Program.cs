@@ -26,7 +26,6 @@ builder.Services.AddMapsterConfiguration(Assembly.GetExecutingAssembly());
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddExceptionHandler<BaseExceptionHandler>();
 builder.Services.AddCarter();
-builder.Services.AddControllers();
 
 
 var app = builder.Build();

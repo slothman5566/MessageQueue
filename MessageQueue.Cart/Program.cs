@@ -1,3 +1,5 @@
+using Carter;
+using FluentValidation;
 using MapsterMapper;
 using MediatR;
 using MessageQueue.Cart.Configuration;
@@ -8,6 +10,7 @@ using MessageQueue.Cart.Repository;
 using MessageQueue.Cart.ViewModel;
 using MessageQueue.Core.Configuration;
 using MessageQueue.Core.Dto;
+using MessageQueue.Core.Exceptions.Handler;
 using MessageQueue.Core.MessageBus;
 using MessageQueue.Core.Options;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +31,9 @@ builder.Services.AddDbContextConfiguration(builder.Configuration);
 builder.Services.AddUnitOfWork();
 builder.Services.AddMediatorConfiguration(Assembly.GetExecutingAssembly());
 builder.Services.AddMapsterConfiguration(Assembly.GetExecutingAssembly());
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+builder.Services.AddExceptionHandler<BaseExceptionHandler>();
+builder.Services.AddCarter();
 
 var app = builder.Build();
 
@@ -37,28 +43,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.MapGet("GetAllBooksCart", (ISender sender) =>
-{
-    return sender.Send(new GetAllBooksCartQuery());
-});
-app.MapGet("GetCart", ([FromQuery] Guid id, ISender sender) =>
-{
-    return sender.Send(new GetBooksCartQuery(id));
-});
 
-app.MapPost("CreateCart", async ([FromBody] BooksCartCreateRequest request, ISender sender, IMapper mapper, IMessageBus bus,
-    IOptions<BooksCartMessageBroker> options, IOptions<BooksCartLogBroker> logOptions) =>
-{
-    var result = await sender.Send(mapper.Map<CreateBooksCartCommand>(request));
-
-    bus.Publish(new BooksCartDto()
-    {
-        CartId = result.Id,
-        List = request.Items.Select(s => new BooksCartItemDto() { BookId = s.BookId, Quantity = s.Quantity }).ToList()
-    }, options.Value);
-    bus.Publish($"Send from CreateCart:{DateTime.UtcNow}", logOptions.Value);
-});
 app.UseHttpsRedirection();
-
+app.UseExceptionHandler(options => { });
+app.MapCarter();
 app.UseMigration();
 app.Run();
