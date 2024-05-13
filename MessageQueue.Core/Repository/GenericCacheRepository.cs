@@ -15,7 +15,7 @@ namespace MessageQueue.Core.Repository
             _repository = repository;
         }
 
-        public async Task<List<TEntity>> GetAllAsync()
+        public virtual async Task<List<TEntity>> GetAllAsync()
         {
             var json = await _cache.GetStringAsync($"{typeof(TEntity).FullName}.List");
             if (json != null)
@@ -29,7 +29,7 @@ namespace MessageQueue.Core.Repository
         }
 
 
-        public async Task<TEntity?> GetById(TId id)
+        public virtual async Task<TEntity?> GetById(TId id)
         {
             var json = await _cache.GetStringAsync($"{typeof(TEntity).FullName}:{id}");
             if (json != null)
@@ -41,26 +41,28 @@ namespace MessageQueue.Core.Repository
             return book;
         }
 
-        public async Task Add(TEntity entity)
+        public virtual async Task Add(TEntity entity)
         {
             await _repository.Add(entity);
             await _cache.SetStringAsync($"{typeof(TEntity).FullName}:{entity.Id}", JsonSerializer.Serialize(entity));
             await RemoveListCache();
         }
 
-        public async Task Remove(TEntity entity)
+        public virtual async Task Remove(TEntity entity)
         {
             await _repository.Remove(entity);
             await _cache.RemoveAsync($"{typeof(TEntity).FullName}:{entity.Id}");
             await RemoveListCache();
         }
 
-        public async Task Update(TEntity entity)
+        public virtual async Task Update(TEntity entity)
         {
             await _repository.Update(entity);
             await _cache.SetStringAsync($"{typeof(TEntity).FullName}:{entity.Id}", JsonSerializer.Serialize(entity));
+
             await RemoveListCache();
         }
+
 
         protected virtual Task RemoveListCache()
         {
