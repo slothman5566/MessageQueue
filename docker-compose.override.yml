@@ -91,5 +91,5 @@ services:
       - POSTGRESQL_USERNAME=user
       - POSTGRESQL_PASSWORD=password
     volumes:
-      - postgres_library:/var/lib/postgresql/data/ 
+      - postgres_library:/bitnami/postgresql
       - ./Postgres/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
