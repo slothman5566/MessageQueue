@@ -5,7 +5,7 @@ namespace MessageQueue.Cart.Repository.UnitOfWork
 {
     public interface IUnitOfWork
     {
-        IBooksCartItemRepository BooksCartItemCacheRepository { get; }
+        IBooksCartItemRepository BooksCartItemRepository { get; }
 
         IBooksCartRepository BooksCartRepository { get; }
 

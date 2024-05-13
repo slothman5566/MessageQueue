@@ -19,7 +19,7 @@ namespace MessageQueue.Cart.Repository.UnitOfWork
         }
      
 
-        public IBooksCartItemRepository BooksCartItemCacheRepository => _booksCartItemRepository;
+        public IBooksCartItemRepository BooksCartItemRepository => _booksCartItemRepository;
 
         public IBooksCartRepository BooksCartRepository => _booksCartRepository;
 
